@@ -480,8 +480,6 @@ StorageFile.prototype.rename = function(title, success, error)
 		{
 			var fn = mxUtils.bind(this, function()
 			{
-				this.title = title;
-				
 				// Updates the data if the extension has changed
 				if (!this.hasSameExtension(oldTitle, title))
 				{
@@ -490,7 +488,8 @@ StorageFile.prototype.rename = function(title, success, error)
 				
 				this.saveFile(title, false, mxUtils.bind(this, function()
 				{
-					this.ui.removeLocalData(oldTitle, success);
+					// This section requires the use of deleteFile to delete old data from the database.
+					StorageFile.deleteFile(this.ui, oldTitle, success, error);
 				}), error);
 			});
 			
